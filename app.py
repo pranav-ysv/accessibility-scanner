@@ -1,23 +1,24 @@
 import streamlit as st
 from bs4 import BeautifulSoup
 
-from checks import check_title, check_lang
+from checks import check_title, check_lang, check_images
 from fetch import fetch_page, FetchError
 
-# Every check the tool runs. Adding a new check = adding one line here.
 CHECKS = [
     ("Page title", check_title),
     ("Page language", check_lang),
+    ("Image descriptions", check_images),
 ]
 
 st.title("Accessibility Scanner")
 
 st.warning(
-    "This tool checks one page of a website for two things: whether the page has a title, "
-    "and whether it says what language it's written in. "
+    "This tool checks one page of a website for three things: whether the page has a title, "
+    "whether it says what language it's written in, and whether images have text descriptions. "
     "Passing these checks does not mean the site is accessible. A page can fail in many ways this tool never looks at. "
-    "It can't see images, forms, videos, colors, keyboard navigation, or any other page on the site, "
-    "so real people, including people who use screen readers, still need to test it."
+    "It can't tell whether an image description is accurate, and it can't see forms, videos, colors, "
+    "keyboard navigation, or any other page on the site, so real people, including people who use "
+    "screen readers, still need to test it."
 )
 
 url = st.text_input("Page URL", placeholder="https://www.example.gov")
@@ -31,11 +32,22 @@ if st.button("Scan"):
     else:
         soup = BeautifulSoup(html, "html.parser")
         st.subheader("Results")
+
         for name, check in CHECKS:
-            failures = check(soup)
-            if failures:
-                for message in failures:
-                    st.error(f"**{name}: failed.** {message}")
+            findings = check(soup)
+            fails = [f for f in findings if f["level"] == "fail"]
+            reviews = [f for f in findings if f["level"] == "review"]
+
+            if fails:
+                st.error(f"**{name}: {len(fails)} failed**")
+                for f in fails:
+                    st.markdown(f"- `{f['element']}` {f['message']}")
             else:
-                st.success(f"**{name}: passed.**")
+                st.success(f"**{name}: passed**")
+
+            if reviews:
+                with st.expander(f"{name}: {len(reviews)} to check yourself"):
+                    for r in reviews:
+                        st.markdown(f"- `{r['element']}` {r['message']}")
+
         st.caption("Only the checks above were run. Passing them does not mean this page is accessible.")
