@@ -1,24 +1,26 @@
 import streamlit as st
 from bs4 import BeautifulSoup
 
-from checks import check_title, check_lang, check_images
+from checks import check_title, check_lang, check_images, check_form_labels
 from fetch import fetch_page, FetchError
 
 CHECKS = [
     ("Page title", check_title),
     ("Page language", check_lang),
     ("Image descriptions", check_images),
+    ("Form labels", check_form_labels),
 ]
 
 st.title("Accessibility Scanner")
 
 st.warning(
-    "This tool checks one page of a website for three things: whether the page has a title, "
-    "whether it says what language it's written in, and whether images have text descriptions. "
+    "This tool checks one page of a website for four things: whether the page has a title, "
+    "whether it says what language it's written in, whether images have text descriptions, "
+    "and whether form fields have labels. "
     "Passing these checks does not mean the site is accessible. A page can fail in many ways this tool never looks at. "
-    "It can't tell whether an image description is accurate, and it can't see forms, videos, colors, "
-    "keyboard navigation, or any other page on the site, so real people, including people who use "
-    "screen readers, still need to test it."
+    "It can't tell whether a description or label is accurate, can't see content added by JavaScript, "
+    "and doesn't check videos, colors, keyboard navigation, or any other page on the site, "
+    "so real people, including people who use screen readers, still need to test it."
 )
 
 url = st.text_input("Page URL", placeholder="https://www.example.gov")
