@@ -1,0 +1,65 @@
+/* Box around the URL input */
+[data-testid="stForm"] {
+    border-radius: 16px;
+    border: 1px solid #2A3550;
+    background: #141B2B;
+}
+
+/* Scan button */
+[data-testid="stFormSubmitButton"] button {
+    background: #FBBF24 !important;
+    color: #0F1420 !important;
+    border: none !important;
+    border-radius: 10px;
+    font-weight: 700;
+    transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+}
+[data-testid="stFormSubmitButton"] button:hover {
+    background: #FCD34D !important;
+    box-shadow: 0 4px 14px rgba(251, 191, 36, 0.35);
+    transform: translateY(-1px);
+}
+[data-testid="stFormSubmitButton"] button:active {
+    transform: scale(0.97);
+}
+[data-testid="stFormSubmitButton"] button:focus-visible {
+    outline: 3px solid #EDEFF5;
+    outline-offset: 2px;
+}
+
+/* Result cards */
+[class*="st-key-card_"] {
+    border-radius: 14px !important;
+    background: #141B2B;
+    transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+[class*="st-key-card_"]:hover {
+    border-color: #FBBF24 !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    transform: translateY(-2px);
+}
+
+/* Summary numbers */
+[data-testid="stMetric"] {
+    background: #141B2B;
+    border: 1px solid #2A3550;
+    border-radius: 12px;
+    padding: 12px 16px;
+}
+
+/* Dropdowns */
+[data-testid="stExpander"] details {
+    border-radius: 12px;
+    border-color: #2A3550;
+}
+[data-testid="stExpander"] summary:hover {
+    color: #FBBF24;
+}
+
+/* Turn off motion for people who ask their computer for less of it */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        transition: none !important;
+        transform: none !important;
+    }
+}
